@@ -347,7 +347,7 @@
 
 @media (max-width: 578px) {
   .header {
-    height: 90vh;
+    height: 80vh;
   }
   .header.sticky {
     width: 100%;
