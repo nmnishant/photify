@@ -360,4 +360,10 @@
   .item {
     font-size: 1.1rem;
   }
+  .height {
+    height: 10vh;
+  }
+  .page-overlay {
+    height: 10vh;
+  }
 }
