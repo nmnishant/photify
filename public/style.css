@@ -336,7 +336,7 @@
 
 @media (max-width: 578px) {
   .header {
-    height: 90vh;
+    height: 80vh;
   }
   .header.sticky {
     width: 100%;
@@ -359,9 +359,6 @@
   }
   .item {
     font-size: 1.1rem;
-  }
-  .height {
-    height: 10vh;
   }
   .page-overlay {
     height: 10vh;
