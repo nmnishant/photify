@@ -5,6 +5,9 @@ Its like a search engine for images using flickr api
 Tech used : NodeJS, Express, HTML, CSS, JavaScript
 <br><br>
 
+Note : Run "npm run watch" to detect any changes in JavaScript files and bundle it again !
+<br><br>
+
 <h4>Demo Video :</h4>
 <br>
 
