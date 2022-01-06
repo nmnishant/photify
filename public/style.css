@@ -214,6 +214,10 @@
   height: calc(100vh - 6rem);
 }
 
+.error-text{
+  text-align: center;
+}
+
 .error img {
   margin-bottom: 50px;
   height: 50vh;
