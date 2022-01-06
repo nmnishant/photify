@@ -8,4 +8,4 @@ Tech used : NodeJS, Express, HTML, CSS, JavaScript
 <h4>Demo Video :</h4>
 <br>
 
-![ipu-result](https://user-images.githubusercontent.com/74682951/148337866-1c63d716-ec47-4f6b-94f7-b0a8ec94b4dd.mp4)
+![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/74682951/148338396-68412e9f-6ffd-41e3-94e9-45f58346d8f7.gif)
