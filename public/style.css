@@ -216,6 +216,7 @@
   position: relative;
   line-height: 2rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-right: 25px;
 }
 
 .item i {
@@ -224,6 +225,10 @@
   top: 50%;
   right: 10px;
   cursor: pointer;
+}
+
+.item li {
+  overflow: hidden;
 }
 
 .item i:hover {
