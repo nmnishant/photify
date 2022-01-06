@@ -10,14 +10,12 @@ app.use(express.static("./public"));
 // No middlewares are required for this project
 // No security is required for this project - Its a Static page
 
-app.get("/home", (req, res) =>
-  res.sendFile("./public/index.html", { root: __dirname })
-);
+app.get("/home", (_, res) => res.redirect("/"));
 
-app.all("*", (req, res) =>
+app.all("*", (_, res) =>
   res.sendFile("./public/error.html", { root: __dirname })
 );
 
-// Please check the public/js for the implementation part
-
-app.listen(process.env.PORT || 3000, () => console.log("Server running"));
+// Server Listening 
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server listening at port ${PORT}`));
