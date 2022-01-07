@@ -71,36 +71,48 @@ const LoadImagesByText = function (searchText) {
 
 ///////////////////////////////////////
 
-// 4. Suggest keywords and load images when press enter
+// 4. Suggest keywords in Search bar using "Debouncing" to optimize it
+const debounceSearch = function (delay) {
+  let timerID;
+  return function (val) {
+    clearInterval(timerID);
+    timerID = setTimeout(async function () {
+      const url = buildFlickrURL({
+        method: "flickr.photos.search",
+        options: { text: val },
+      });
+
+      try {
+        const res = await fetch(url);
+        const resJSON = await res.json();
+        autoComp.innerHTML = "";
+        if (resJSON.stat == "fail") throw new Error(resJSON.message);
+        for (let i = 0; i < resJSON.photos.photo.length && i < 5; i++) {
+          const title = resJSON.photos.photo[i].title;
+          if (!title) continue;
+          autoComp.insertAdjacentHTML(
+            "beforeend",
+            `<div class="item">
+            <li>${resJSON.photos.photo[i].title}</li>
+            </div>`
+          );
+        }
+      } catch (err) {
+        showError(err);
+      }
+    }, delay);
+  };
+};
+
+const suggestKeyWords = debounceSearch(500);
+
 searchField.addEventListener("keyup", async function (e) {
   const val = e.target.value;
 
   if (e.key == "Enter") return LoadImagesByText(val);
-  if (!val) return;
+  if (!val) return loadAutoComplete();
 
-  const url = buildFlickrURL({
-    method: "flickr.photos.search",
-    options: { text: val },
-  });
-
-  try {
-    const res = await fetch(url);
-    const resJSON = await res.json();
-    autoComp.innerHTML = "";
-    if (resJSON.stat == "fail") throw new Error(resJSON.message);
-    for (let i = 0; i < resJSON.photos.photo.length && i < 5; i++) {
-      const title = resJSON.photos.photo[i].title;
-      if (!title) continue;
-      autoComp.insertAdjacentHTML(
-        "beforeend",
-        `<div class="item">
-        <li>${resJSON.photos.photo[i].title}</li>
-        </div>`
-      );
-    }
-  } catch (err) {
-    showError(err);
-  }
+  suggestKeyWords(val);
 });
 
 ///////////////////////////////////////

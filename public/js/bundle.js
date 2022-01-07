@@ -7245,105 +7245,128 @@ var LoadImagesByText = function LoadImagesByText(searchText) {
   imageContainer.innerHTML = "";
   (0, _Error.hideError)();
 }; ///////////////////////////////////////
-// 4. Suggest keywords and load images when press enter
+// 4. Suggest keywords in Search bar using "Debouncing" to optimize it
 
 
+var debounceSearch = function debounceSearch(delay) {
+  var timerID;
+  return function (val) {
+    clearInterval(timerID);
+    timerID = setTimeout( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var url, res, resJSON, i, title;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              url = (0, _buildFlickrURL.default)({
+                method: "flickr.photos.search",
+                options: {
+                  text: val
+                }
+              });
+              _context.prev = 1;
+              _context.next = 4;
+              return fetch(url);
+
+            case 4:
+              res = _context.sent;
+              _context.next = 7;
+              return res.json();
+
+            case 7:
+              resJSON = _context.sent;
+              autoComp.innerHTML = "";
+
+              if (!(resJSON.stat == "fail")) {
+                _context.next = 11;
+                break;
+              }
+
+              throw new Error(resJSON.message);
+
+            case 11:
+              i = 0;
+
+            case 12:
+              if (!(i < resJSON.photos.photo.length && i < 5)) {
+                _context.next = 20;
+                break;
+              }
+
+              title = resJSON.photos.photo[i].title;
+
+              if (title) {
+                _context.next = 16;
+                break;
+              }
+
+              return _context.abrupt("continue", 17);
+
+            case 16:
+              autoComp.insertAdjacentHTML("beforeend", "<div class=\"item\">\n            <li>".concat(resJSON.photos.photo[i].title, "</li>\n            </div>"));
+
+            case 17:
+              i++;
+              _context.next = 12;
+              break;
+
+            case 20:
+              _context.next = 25;
+              break;
+
+            case 22:
+              _context.prev = 22;
+              _context.t0 = _context["catch"](1);
+              (0, _Error.showError)(_context.t0);
+
+            case 25:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[1, 22]]);
+    })), delay);
+  };
+};
+
+var suggestKeyWords = debounceSearch(500);
 searchField.addEventListener("keyup", /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
-    var val, url, res, resJSON, i, title;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(e) {
+    var val;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
-        switch (_context.prev = _context.next) {
+        switch (_context2.prev = _context2.next) {
           case 0:
             val = e.target.value;
 
             if (!(e.key == "Enter")) {
-              _context.next = 3;
+              _context2.next = 3;
               break;
             }
 
-            return _context.abrupt("return", LoadImagesByText(val));
+            return _context2.abrupt("return", LoadImagesByText(val));
 
           case 3:
             if (val) {
-              _context.next = 5;
+              _context2.next = 5;
               break;
             }
 
-            return _context.abrupt("return");
+            return _context2.abrupt("return", (0, _loadAutoComplete.default)());
 
           case 5:
-            url = (0, _buildFlickrURL.default)({
-              method: "flickr.photos.search",
-              options: {
-                text: val
-              }
-            });
-            _context.prev = 6;
-            _context.next = 9;
-            return fetch(url);
+            suggestKeyWords(val);
 
-          case 9:
-            res = _context.sent;
-            _context.next = 12;
-            return res.json();
-
-          case 12:
-            resJSON = _context.sent;
-            autoComp.innerHTML = "";
-
-            if (!(resJSON.stat == "fail")) {
-              _context.next = 16;
-              break;
-            }
-
-            throw new Error(resJSON.message);
-
-          case 16:
-            i = 0;
-
-          case 17:
-            if (!(i < resJSON.photos.photo.length && i < 5)) {
-              _context.next = 25;
-              break;
-            }
-
-            title = resJSON.photos.photo[i].title;
-
-            if (title) {
-              _context.next = 21;
-              break;
-            }
-
-            return _context.abrupt("continue", 22);
-
-          case 21:
-            autoComp.insertAdjacentHTML("beforeend", "<div class=\"item\">\n        <li>".concat(resJSON.photos.photo[i].title, "</li>\n        </div>"));
-
-          case 22:
-            i++;
-            _context.next = 17;
-            break;
-
-          case 25:
-            _context.next = 30;
-            break;
-
-          case 27:
-            _context.prev = 27;
-            _context.t0 = _context["catch"](6);
-            (0, _Error.showError)(_context.t0);
-
-          case 30:
+          case 6:
           case "end":
-            return _context.stop();
+            return _context2.stop();
         }
       }
-    }, _callee, null, [[6, 27]]);
+    }, _callee2);
   }));
 
   return function (_x) {
-    return _ref5.apply(this, arguments);
+    return _ref6.apply(this, arguments);
   };
 }()); ///////////////////////////////////////
 // 5. Store and delete search results
@@ -7466,7 +7489,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50925" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56144" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
